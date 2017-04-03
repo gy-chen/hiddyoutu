@@ -4,9 +4,11 @@ import React, { Component } from 'react';
 class HiddYoutu extends Component {
 
   render() {
+    const { match } = this.props;
+
     return (
       <div>
-        Hello HiddYoutu
+        Hello {match.params.youtube_id}
       </div>
     );
   }
