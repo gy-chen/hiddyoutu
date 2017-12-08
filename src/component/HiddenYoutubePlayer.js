@@ -72,7 +72,6 @@ class HiddenYoutubePlayer extends Component {
     }
 
     _initialize() {
-        YT = window[YOUTUBE_API_NAME];
         YT.ready(() => {
             this._player = new YT.Player(this._playerContainer, {
                 events: {
@@ -80,7 +79,6 @@ class HiddenYoutubePlayer extends Component {
                     'onStateChange': (state) => this._onPlayerStateChanged(state)
                 }
             });
-            this._autoPlay();
         });
     }
 
