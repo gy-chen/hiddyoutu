@@ -17,7 +17,7 @@
  *      - onVideoPaused
  */
 import _ from 'lodash';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import load from 'load-script';
 import './HiddenYoutubePlayer.css';
@@ -64,8 +64,8 @@ class HiddenYoutubePlayer extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const {videoId} = this.props;
-        const {videoId: prevVideoId} = prevProps;
+        const { videoId } = this.props;
+        const { videoId: prevVideoId } = prevProps;
         if (videoId !== prevVideoId) {
             this._autoPlay();
         }
@@ -88,7 +88,7 @@ class HiddenYoutubePlayer extends Component {
         if (!this._player) {
             return;
         }
-        const {videoId, autoPlay} = this.props;
+        const { videoId, autoPlay } = this.props;
         if (videoId) {
             this._player.loadVideoById(videoId);
         }
@@ -103,7 +103,7 @@ class HiddenYoutubePlayer extends Component {
     }
 
     _onPlayerStateChanged(state) {
-        switch (state) {
+        switch (state.data) {
             case 0:
                 _.invoke(this.props, 'onVideoEnded');
                 break;
