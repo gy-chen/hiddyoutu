@@ -111,6 +111,8 @@ class HiddenYoutubePlayer extends Component {
             case 2:
                 _.invoke(this.props, 'onVideoPaused');
                 break;
+            default:
+                break;
         }
     }
 
