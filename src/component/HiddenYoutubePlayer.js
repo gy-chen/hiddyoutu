@@ -1,3 +1,14 @@
+import _ from 'lodash';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import load from 'load-script';
+import './HiddenYoutubePlayer.css';
+
+const YOUTUBE_API_URL = "https://www.youtube.com/iframe_api";
+const YOUTUBE_API_NAME = "YT";
+let YT = null;
+
+
 /**
  * HiddenYoutubePlayer
  *
@@ -16,17 +27,6 @@
  *      - onVideoPlaying
  *      - onVideoPaused
  */
-import _ from 'lodash';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import load from 'load-script';
-import './HiddenYoutubePlayer.css';
-
-const YOUTUBE_API_URL = "https://www.youtube.com/iframe_api";
-const YOUTUBE_API_NAME = "YT";
-let YT = null;
-
-
 class HiddenYoutubePlayer extends Component {
 
     constructor(props) {
