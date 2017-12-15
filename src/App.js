@@ -5,6 +5,8 @@ import {search} from "./action";
 import YoutubeSearchList from './component/YoutubeSearchList';
 import SearchInput from './component/SearchInput';
 import HiddenYoutubePlayer from './component/HiddenYoutubePlayer';
+import {searchRelatedVideos} from './service/youtu';
+import {extractItemVideoId} from "./util/youtu";
 
 class App extends Component {
 
@@ -21,7 +23,27 @@ class App extends Component {
     }
 
     _onItemClick(item) {
-        const videoId = _.get(item, 'id.videoId');
+        const videoId = extractItemVideoId(item);
+        this._setCurrentVideo(videoId);
+    }
+
+
+    _onPlayEnded() {
+        searchRelatedVideos(this.state.videoId)
+            .then(res => res.data)
+            .then(data => {
+                this._playRandomItems(data.items);
+            });
+
+    }
+
+    _playRandomItems(items) {
+        const item = _.sample(items);
+        const videoId = extractItemVideoId(item);
+        this._setCurrentVideo(videoId);
+    }
+
+    _setCurrentVideo(videoId) {
         this.setState({
             videoId
         });
@@ -36,7 +58,8 @@ class App extends Component {
                     items={this.props.searchResult}
                     onItemClick={item => this._onItemClick(item)}/>
                 <HiddenYoutubePlayer
-                    videoId={this.state.videoId}/>
+                    videoId={this.state.videoId}
+                    onVideoEnded={() => this._onPlayEnded()}/>
             </div>
         );
     }
