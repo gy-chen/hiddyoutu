@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {extractItemEtag, extractItemTitle} from "../util/youtu";
+import {extractItemEtag, extractItemTitle, searchResultItemPropTypes} from "../util/youtu";
 
 /**
  * YoutuSearchList
  *
  * Provides:
- *   - Display passed children
+ *   - Display passed items
  *   - Provide callback when user click an item
  */
 class YoutubeSearchList extends Component {
@@ -37,15 +37,7 @@ class YoutubeSearchList extends Component {
 
 YoutubeSearchList.propTypes = {
     onItemClick: PropTypes.func,
-    items: PropTypes.arrayOf(PropTypes.shape({
-        etag: PropTypes.string.isRequired,
-        id: PropTypes.shape({
-            videoId: PropTypes.string.isRequired
-        }).isRequired,
-        snippet: PropTypes.shape({
-            title: PropTypes.string.isRequired,
-        }).isRequired
-    }))
+    items: PropTypes.arrayOf(searchResultItemPropTypes)
 };
 
 YoutubeSearchList.defaultProps = {
