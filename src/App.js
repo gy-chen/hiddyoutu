@@ -8,6 +8,14 @@ import HiddenYoutubePlayer from './component/HiddenYoutubePlayer';
 import {searchRelatedVideos} from './service/youtu';
 import {extractItemVideoId} from "./util/youtu";
 
+/**
+ * Composite components and provides logic to make this app works
+ *
+ * TODO:
+ *   - Add Controls: let music can be paused and played again
+ *   - Add next page button for searching next page results
+ *   - Let user can enter their API key to operate Youtube API
+ */
 class App extends Component {
 
     constructor(props) {
