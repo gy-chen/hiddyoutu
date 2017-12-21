@@ -3,15 +3,14 @@ import {
     YOUTUBE_CLEAR_SEARCH_RESULT
 } from '../action';
 
-function searchResult(state = [], action) {
+
+export default function (state = null, action) {
     switch (action.type) {
         case YOUTUBE_PUT_SEARCH_RESULT:
-            return action.payload.items;
+            return action.payload.nextPageToken;
         case YOUTUBE_CLEAR_SEARCH_RESULT:
-            return [];
+            return null;
         default:
             return state;
     }
 }
-
-export default searchResult;
