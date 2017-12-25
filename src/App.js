@@ -76,7 +76,8 @@ class App extends Component {
 
     _renderNextPageButton() {
         const { keyword } = this.state;
-        if (!keyword) {
+        const { nextPageToken } = this.props;
+        if (!keyword || !nextPageToken) {
             return;
         }
         return (
