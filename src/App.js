@@ -12,9 +12,9 @@ import { extractItemVideoId } from "./util/youtu";
  * Composite components and provides logic to make this app works
  *
  * TODO:
- *   - Add Controls: let music can be paused and played again
  *   - Let user can enter their API key to operate Youtube API
  *   - Add undo to make user can navigate back to previous page of search result
+ *   - Optimise control: can use one button for play and pause
  */
 class App extends Component {
 
@@ -25,6 +25,7 @@ class App extends Component {
             videoId: null,
             keyword: null
         };
+        this._player = null;
     }
 
     _onSearchInputSubmit(keyword) {
@@ -83,6 +84,24 @@ class App extends Component {
         );
     }
 
+    _onPlayButtonClick() {
+        if (!this._player) {
+            return;
+        }
+        this._player.play();
+    }
+
+    _onPauseButtonClick() {
+        if (!this._player) {
+            return;
+        }
+        this._player.pause();
+    }
+
+    _playerRef(ref) {
+        this._player = ref;
+    }
+
     render() {
         return (
             <div>
@@ -92,9 +111,14 @@ class App extends Component {
                     items={this.props.searchResult}
                     onItemClick={item => this._onItemClick(item)} />
                 <HiddenYoutubePlayer
+                    ref={player => this._playerRef(player)}
                     videoId={this.state.videoId}
                     onVideoEnded={() => this._onPlayEnded()} />
                 {this._renderNextPageButton()}
+                <div>
+                   <button type="button" onClick={() => this._onPauseButtonClick()}>Pause</button>
+                   <button type="button" onClick={() => this._onPlayButtonClick()}>Play</button>
+                </div>
             </div>
         );
     }
