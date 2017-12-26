@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {extractItemEtag, extractItemTitle, searchResultItemPropTypes} from "../util/youtu";
+import {extractItemEtag, extractItemTitle, searchResultItemPropTypes} from '../util/youtu';
 
 /**
  * YoutuSearchList

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import load from 'load-script';
 import './HiddenYoutubePlayer.css';
 
-const YOUTUBE_API_URL = "https://www.youtube.com/iframe_api";
-const YOUTUBE_API_NAME = "YT";
+const YOUTUBE_API_URL = 'https://www.youtube.com/iframe_api';
+const YOUTUBE_API_NAME = 'YT';
 let YT = null;
 
 
@@ -102,17 +102,17 @@ class HiddenYoutubePlayer extends Component {
 
     _onPlayerStateChanged(state) {
         switch (state.data) {
-            case 0:
-                _.invoke(this.props, 'onVideoEnded');
-                break;
-            case 1:
-                _.invoke(this.props, 'onVideoPlaying');
-                break;
-            case 2:
-                _.invoke(this.props, 'onVideoPaused');
-                break;
-            default:
-                break;
+        case 0:
+            _.invoke(this.props, 'onVideoEnded');
+            break;
+        case 1:
+            _.invoke(this.props, 'onVideoPlaying');
+            break;
+        case 2:
+            _.invoke(this.props, 'onVideoPaused');
+            break;
+        default:
+            break;
         }
     }
 
@@ -127,7 +127,7 @@ class HiddenYoutubePlayer extends Component {
 
 HiddenYoutubePlayer.defaultProps = {
     autoPlay: true
-}
+};
 
 HiddenYoutubePlayer.propTypes = {
     videoId: PropTypes.string,
@@ -135,6 +135,6 @@ HiddenYoutubePlayer.propTypes = {
     onVideoEnded: PropTypes.func,
     onVideoPlaying: PropTypes.func,
     onVideoPaused: PropTypes.func
-}
+};
 
 export default HiddenYoutubePlayer;

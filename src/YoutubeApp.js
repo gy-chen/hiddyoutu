@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { search } from "./action";
+import { search } from './action';
 import YoutubeSearchList from './component/YoutubeSearchList';
 import SearchInput from './component/SearchInput';
 import HiddenYoutubePlayer from './component/HiddenYoutubePlayer';
 import { searchRelatedVideos } from './service/youtu';
-import { extractItemVideoId } from "./util/youtu";
+import { extractItemVideoId } from './util/youtu';
 
 /**
  * Composite components and provides logic to make this app works
@@ -16,7 +16,7 @@ import { extractItemVideoId } from "./util/youtu";
  *   - Add undo to make user can navigate back to previous page of search result
  *   - Optimise control: can use one button for play and pause
  */
-class App extends Component {
+class YoutubeApp extends Component {
 
     constructor(props) {
         super(props);
@@ -117,8 +117,8 @@ class App extends Component {
                     onVideoEnded={() => this._onPlayEnded()} />
                 {this._renderNextPageButton()}
                 <div>
-                   <button type="button" onClick={() => this._onPauseButtonClick()}>Pause</button>
-                   <button type="button" onClick={() => this._onPlayButtonClick()}>Play</button>
+                    <button type="button" onClick={() => this._onPauseButtonClick()}>Pause</button>
+                    <button type="button" onClick={() => this._onPlayButtonClick()}>Play</button>
                 </div>
             </div>
         );
@@ -134,4 +134,4 @@ const mapDispatchToProps = {
     search
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(YoutubeApp);

@@ -5,12 +5,12 @@ import {
 
 function searchResult(state = [], action) {
     switch (action.type) {
-        case YOUTUBE_PUT_SEARCH_RESULT:
-            return action.payload.items;
-        case YOUTUBE_CLEAR_SEARCH_RESULT:
-            return [];
-        default:
-            return state;
+    case YOUTUBE_PUT_SEARCH_RESULT:
+        return action.payload.items;
+    case YOUTUBE_CLEAR_SEARCH_RESULT:
+        return [];
+    default:
+        return state;
     }
 }
 

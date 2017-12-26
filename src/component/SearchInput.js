@@ -33,6 +33,6 @@ class SearchInput extends Component {
 
 SearchInput.propTypes = {
     onSubmit: PropTypes.func
-}
+};
 
 export default SearchInput;
