@@ -12,9 +12,8 @@ import { extractItemVideoId } from './util/youtu';
  * Composite components and provides logic to make this app works
  *
  * TODO:
- *   - Let user can enter their API key to operate Youtube API
  *   - Add undo to make user can navigate back to previous page of search result
- *   - Optimise control: can use one button for play and pause
+ *   - Optimize control: can use one button for play and pause
  */
 class YoutubeApp extends Component {
 

@@ -12,9 +12,10 @@ export function putApiKey(apiKey) {
 }
 
 export function search(keyword, nextPageToken = null) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
+        const apiKey = getState().apiKey;
         dispatch(clearSearchResult());
-        searchVideos(keyword, nextPageToken)
+        searchVideos(keyword, nextPageToken, apiKey)
             .then(res => res.data)
             .then(data => dispatch(putSearchResult(data)));
     };

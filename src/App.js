@@ -8,6 +8,8 @@ import ApiKeyProvidedRoute from './component/ApiKeyProvidedRoute';
 import ApiKeyInput from './container/ApiKeyInput';
 import YoutubeApp from './YoutubeApp';
 
+
+
 /**
  * App
  *
@@ -19,8 +21,8 @@ class App extends Component {
         return (
             <Router>
                 <div>
-                    <Link to="/player">Player</Link>
                     <Route exact path="/" component={ApiKeyInput} />
+                    <Route path="/player" component={() => <Link to="/">Input ApiKey</Link>} />
                     <ApiKeyProvidedRoute path="/player" component={YoutubeApp} />
                 </div>
             </Router>
