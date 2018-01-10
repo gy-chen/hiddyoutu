@@ -13,7 +13,6 @@ import { extractItemVideoId } from './util/youtu';
  *
  * TODO:
  *   - Add undo to make user can navigate back to previous page of search result
- *   - Optimize control: can use one button for play and pause
  */
 class YoutubeApp extends Component {
 
@@ -22,7 +21,8 @@ class YoutubeApp extends Component {
 
         this.state = {
             videoId: null,
-            keyword: null
+            keyword: null,
+            isPlaying: false
         };
         this._player = null;
     }
@@ -38,13 +38,27 @@ class YoutubeApp extends Component {
     }
 
 
-    _onPlayEnded() {
+    _onVideoEnded() {
         searchRelatedVideos(this.state.videoId)
             .then(res => res.data)
             .then(data => {
                 this._playRandomItems(data.items);
             });
+        this.setState({
+            isPlaying: true
+        });
+    }
 
+    _onVideoPaused() {
+        this.setState({
+            isPlaying: false
+        });
+    }
+
+    _onVideoPlaying() {
+        this.setState({
+            isPlaying: true
+        });
     }
 
     _playRandomItems(items) {
@@ -84,6 +98,14 @@ class YoutubeApp extends Component {
         );
     }
 
+    _renderPlayButton() {
+        if (this.state.isPlaying) {
+            return (<button type="button" onClick={() => this._onPauseButtonClick()}>Pause</button>);
+        } else {
+            return (<button type="button" onClick={() => this._onPlayButtonClick()}>Play</button>);
+        }
+    }
+
     _onPlayButtonClick() {
         if (!this._player) {
             return;
@@ -113,11 +135,12 @@ class YoutubeApp extends Component {
                 <HiddenYoutubePlayer
                     ref={player => this._playerRef(player)}
                     videoId={this.state.videoId}
-                    onVideoEnded={() => this._onPlayEnded()} />
+                    onVideoEnded={() => this._onVideoEnded()}
+                    onVideoPlaying={() => this._onVideoPlaying()}
+                    onVideoPaused={() => this._onVideoPaused()}/>
                 {this._renderNextPageButton()}
                 <div>
-                    <button type="button" onClick={() => this._onPauseButtonClick()}>Pause</button>
-                    <button type="button" onClick={() => this._onPlayButtonClick()}>Play</button>
+                    {this._renderPlayButton()}
                 </div>
             </div>
         );
