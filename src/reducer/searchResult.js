@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
     YOUTUBE_PUT_SEARCH_RESULT,
     YOUTUBE_CLEAR_SEARCH_RESULT
@@ -6,7 +7,7 @@ import {
 function searchResult(state = [], action) {
     switch (action.type) {
     case YOUTUBE_PUT_SEARCH_RESULT:
-        return action.payload.items;
+        return _.get(action.payload, 'items', []);
     case YOUTUBE_CLEAR_SEARCH_RESULT:
         return [];
     default:
