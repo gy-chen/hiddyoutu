@@ -1,11 +1,14 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { search } from './action';
+import {
+    search,
+    searchRelatedVideos,
+} from './action';
 import YoutubeSearchList from './component/YoutubeSearchList';
 import SearchInput from './component/SearchInput';
 import HiddenYoutubePlayer from './component/HiddenYoutubePlayer';
-import { searchRelatedVideos } from './service/youtu';
 import { extractItemVideoId } from './util/youtu';
 
 /**
@@ -15,14 +18,13 @@ import { extractItemVideoId } from './util/youtu';
  *   - Add undo to make user can navigate back to previous page of search result
  */
 class YoutubeApp extends Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
             videoId: null,
             keyword: null,
-            isPlaying: false
+            isPlaying: false,
         };
         this._player = null;
     }
@@ -39,25 +41,23 @@ class YoutubeApp extends Component {
 
 
     _onVideoEnded() {
-        searchRelatedVideos(this.state.videoId)
-            .then(res => res.data)
-            .then(data => {
-                this._playRandomItems(data.items);
-            });
         this.setState({
-            isPlaying: true
+            isPlaying: false,
+        }, () => {
+            const {relatedVideosResult} = this.props;
+            this._playRandomItems(relatedVideosResult);
         });
     }
 
     _onVideoPaused() {
         this.setState({
-            isPlaying: false
+            isPlaying: false,
         });
     }
 
     _onVideoPlaying() {
         this.setState({
-            isPlaying: true
+            isPlaying: true,
         });
     }
 
@@ -69,18 +69,21 @@ class YoutubeApp extends Component {
 
     _setCurrentVideo(videoId) {
         this.setState({
-            videoId
+            videoId,
+        }, () => {
+            const {searchRelatedVideos} = this.props;
+            searchRelatedVideos(this.state.videoId, null, this.state.apiKey);
         });
     }
 
     _setCurrentKeyword(keyword) {
         this.setState({
-            keyword
+            keyword,
         });
     }
 
     _onMoreButtonClick() {
-        const { search, nextPageToken } = this.props;
+        const {search, nextPageToken} = this.props;
         if (!nextPageToken) {
             return;
         }
@@ -88,8 +91,8 @@ class YoutubeApp extends Component {
     }
 
     _renderNextPageButton() {
-        const { keyword } = this.state;
-        const { nextPageToken } = this.props;
+        const {keyword} = this.state;
+        const {nextPageToken} = this.props;
         if (!keyword || !nextPageToken) {
             return;
         }
@@ -128,12 +131,16 @@ class YoutubeApp extends Component {
         return (
             <div>
                 <SearchInput
-                    onSubmit={keyword => this._onSearchInputSubmit(keyword)} />
+                    onSubmit={(keyword) => this._onSearchInputSubmit(keyword)}/>
                 <YoutubeSearchList
                     items={this.props.searchResult}
-                    onItemClick={item => this._onItemClick(item)} />
+                    onItemClick={(item) => this._onItemClick(item)}/>
+                <hr/>
+                <YoutubeSearchList
+                    items={this.props.relatedVideosResult}
+                    onItemClick={(item) => this._onItemClick(item)}/>
                 <HiddenYoutubePlayer
-                    ref={player => this._playerRef(player)}
+                    ref={(player) => this._playerRef(player)}
                     videoId={this.state.videoId}
                     onVideoEnded={() => this._onVideoEnded()}
                     onVideoPlaying={() => this._onVideoPlaying()}
@@ -147,13 +154,23 @@ class YoutubeApp extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+YoutubeApp.propTypes = {
+    search: PropTypes.func.isRequired,
+    searchRelatedVideos: PropTypes.func.isRequired,
+    relatedVideosResult: PropTypes.array.isRequired,
+    searchResult: PropTypes.array.isRequired,
+    nextPageToken: PropTypes.string,
+};
+
+const mapStateToProps = (state) => ({
     searchResult: state.searchResult,
-    nextPageToken: state.nextPageToken
+    relatedVideosResult: state.relatedVideosResult,
+    nextPageToken: state.nextPageToken,
 });
 
 const mapDispatchToProps = {
-    search
+    search,
+    searchRelatedVideos,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(YoutubeApp);
