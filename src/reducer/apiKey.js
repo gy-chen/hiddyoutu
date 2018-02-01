@@ -1,10 +1,14 @@
-import { YOUTUBE_PUT_API_KEY } from '../action';
+import {createReducer} from 'reduxsauce';
+import Types from '../action/type';
 
-export default function(state=null, action) {
-    switch(action.type) {
-    case YOUTUBE_PUT_API_KEY:
-        return action.payload;
-    default:
-        return state;
-    }
+const INITIAL_STATE = '';
+
+function putApiKey(state, action) {
+    return action.payload;
 }
+
+const HANDLERS = {
+    [Types.YOUTUBE_PUT_API_KEY]: putApiKey,
+}
+
+export default createReducer(INITIAL_STATE, HANDLERS);

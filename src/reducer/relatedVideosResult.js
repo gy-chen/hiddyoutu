@@ -1,16 +1,20 @@
 import _ from 'lodash';
-import {
-    YOUTUBE_PUT_RELATED_VIDEOS_RESULT,
-    YOUTUBE_CLEAR_RELATED_VIDEOS_RESULT
-} from '../action';
+import {createReducer} from 'reduxsauce';
+import Types from '../action/type';
 
-export default function (state = [], action) {
-    switch (action.type) {
-    case YOUTUBE_PUT_RELATED_VIDEOS_RESULT:
-        return _.get(action.payload, 'items', []);
-    case YOUTUBE_CLEAR_RELATED_VIDEOS_RESULT:
-        return [];
-    default:
-        return state;
-    }
+const INITIAL_STATE = [];
+
+function putRelatedVideosResult(state = INITIAL_STATE, action) {
+    return _.get(action.payload, 'items', []);
 }
+
+function clearRelatedVideosResult() {
+    return [];
+}
+
+const HANDLERS = {
+    [Types.YOUTUBE_PUT_RELATED_VIDEOS_RESULT]: putRelatedVideosResult,
+    [Types.YOUTUBE_CLEAR_RELATED_VIDEOS_RESULT]: clearRelatedVideosResult
+};
+
+export default createReducer(INITIAL_STATE, HANDLERS);
