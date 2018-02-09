@@ -1,8 +1,5 @@
-import {
-    searchVideos,
-    searchRelatedVideos as serviceSearchRelatedVideos
-} from '../service/youtu';
 import Types from './type';
+
 
 export function putApiKey(apiKey) {
     return {
@@ -12,25 +9,20 @@ export function putApiKey(apiKey) {
 }
 
 export function search(keyword, nextPageToken = null) {
-    return function (dispatch, getState) {
-        const apiKey = getState().apiKey;
-        dispatch(clearSearchResult());
-        searchVideos(keyword, nextPageToken, apiKey)
-            .then(res => res.data)
-            .then(data => dispatch(putSearchResult(data)));
+    return {
+        type: Types.YOUTUBE_SEARCH,
+        keyword,
+        nextPageToken
     };
 }
 
 export function searchRelatedVideos(videoId, nextPageToken = null) {
-    return function (dispatch, getState) {
-        const apiKey = getState().apiKey;
-        dispatch(clearRelatedVideosResult());
-        serviceSearchRelatedVideos(videoId, nextPageToken, apiKey)
-            .then(res => res.data)
-            .then(data => dispatch(putRelatedVideosResult(data)));
+    return {
+        type: Types.YOUTUBE_SEARCH_RELATED_VIDEOS,
+        videoId,
+        nextPageToken
     };
 }
-
 
 export function clearSearchResult() {
     return {type: Types.YOUTUBE_CLEAR_SEARCH_RESULT};
