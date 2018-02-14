@@ -1,34 +1,70 @@
+import _ from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
     putApiKey
 } from '../action';
 import ApiKeyInput from '../component/ApiKeyInput';
+import provideQueryStringFromRouter from '../component/hoc/provideQueryStringFromRoute';
 
 /**
- * HOC that redirect user to player after the api key is inputed.
+ * HOC that redirect user to player after the api key is inputted.
  *
+ * The container will auto input apiKey if apiKey is provided by query string with key apiKey.
  */
-function apiInputContainer(Component) {
+function apiKeyInputContainer(Component) {
 
-    return props => {
-        function onSubmit(apiKey) {
-            const { putApiKey, history } = props;
-            putApiKey(apiKey);
-            history.push('/player');
+    const QS_KEY_APIKEY = 'apiKey';
+    const LOCATION_AFTER_APIKEY_INPUTTED = '/player';
+
+    class ApiInputContainer extends React.Component {
+
+        constructor(props) {
+            super(props);
+
+            this._onSumbit = this._onSumbit.bind(this);
         }
 
-        return (
-            <Component
-                {...props}
-                onSubmit={apiKey => onSubmit(apiKey)}
-            />
-        );
+        componentDidMount() {
+            const { qs } = this.props;
+            if (qs[QS_KEY_APIKEY]) {
+                this._onSumbit(qs[QS_KEY_APIKEY]);
+            }
+        }
+
+        _onSumbit(apiKey) {
+            const { putApiKey, history } = this.props;
+            putApiKey(apiKey);
+            history.push(LOCATION_AFTER_APIKEY_INPUTTED);
+        }
+
+        render() {
+            return (
+                <Component
+                    {...this.props}
+                    onSubmit={apiKey => this._onSubmit(apiKey)}
+                />
+            );
+        }
+    }
+
+    ApiInputContainer.propTypes = {
+        putApiKey: PropTypes.func.isRequired,
+        history: PropTypes.object.isRequired,
+        qs: PropTypes.object.isRequired
     };
+
+
+    return ApiInputContainer;
 }
 
 const mapDispatchToProps = {
     putApiKey
 };
 
-export default connect(null, mapDispatchToProps)(apiInputContainer(ApiKeyInput));
+export default _.flowRight(
+    connect(null, mapDispatchToProps),
+    provideQueryStringFromRouter,
+    apiKeyInputContainer
+)(ApiKeyInput);
