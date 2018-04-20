@@ -23,17 +23,17 @@ function apiKeyInputContainer(Component) {
         constructor(props) {
             super(props);
 
-            this._onSumbit = this._onSumbit.bind(this);
+            this._onSubmit = this._onSubmit.bind(this);
         }
 
         componentDidMount() {
             const { qs } = this.props;
             if (qs[QS_KEY_APIKEY]) {
-                this._onSumbit(qs[QS_KEY_APIKEY]);
+                this._onSubmit(qs[QS_KEY_APIKEY]);
             }
         }
 
-        _onSumbit(apiKey) {
+        _onSubmit(apiKey) {
             const { putApiKey, history } = this.props;
             putApiKey(apiKey);
             history.push(LOCATION_AFTER_APIKEY_INPUTTED);
@@ -43,7 +43,7 @@ function apiKeyInputContainer(Component) {
             return (
                 <Component
                     {...this.props}
-                    onSubmit={apiKey => this._onSubmit(apiKey)}
+                    onSubmit={this._onSubmit}
                 />
             );
         }
